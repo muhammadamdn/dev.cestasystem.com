@@ -17,7 +17,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Job_candidates extends MY_Controller {
-	
+
 	 public function __construct() {
         Parent::__construct();
 		//load the model
@@ -25,7 +25,7 @@ class Job_candidates extends MY_Controller {
 		$this->load->model("Xin_model");
 		$this->load->model("Designation_model");
 	}
-	
+
 	/*Function to set JSON output*/
 	public function output($Return=array()){
 		/*Set response header*/
@@ -34,11 +34,11 @@ class Job_candidates extends MY_Controller {
 		/*Final JSON response*/
 		exit(json_encode($Return));
 	}
-	
+
 	 public function index()
      {
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$system = $this->Xin_model->read_setting_info(1);
@@ -49,8 +49,8 @@ class Job_candidates extends MY_Controller {
 		$data['breadcrumbs'] = $this->lang->line('left_job_candidates');
 		$data['path_url'] = 'job_candidates';
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('51',$role_resources_ids)) {
-			if(!empty($session)){ 
+		if(in_array('93',$role_resources_ids)) {
+			if(!empty($session)){
 				$data['subview'] = $this->load->view("admin/job_post/job_candidates", $data, TRUE);
 				$this->load->view('admin/layout/layout_main', $data); //page load
 			} else {
@@ -58,15 +58,15 @@ class Job_candidates extends MY_Controller {
 			}
 		} else {
 			redirect('admin/dashboard');
-		}		  
+		}
      }
- 
+
     public function candidate_list()
      {
 
 		$data['title'] = $this->Xin_model->site_title();
 		$session = $this->session->userdata('username');
-		if(!empty($session)){ 
+		if(!empty($session)){
 			$this->load->view("admin/job_post/job_candidates", $data);
 		} else {
 			redirect('admin/');
@@ -75,14 +75,14 @@ class Job_candidates extends MY_Controller {
 		$draw = intval($this->input->get("draw"));
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
-		
-		
+
+
 		$candidates = $this->Job_post_model->get_jobs_candidates();
-		
+
 		$data = array();
 
         foreach($candidates->result() as $r) {
-			 			  
+
 		// get user
 		$user = $this->Xin_model->read_user_info($r->user_id);
 		// get full name
@@ -90,7 +90,7 @@ class Job_candidates extends MY_Controller {
 			$full_name = $user[0]->first_name. ' ' .$user[0]->last_name;
 			$uemail = $user[0]->email;
 		} else {
-			$full_name = '--';	
+			$full_name = '--';
 			$uemail = '--';
 		}
 		// get job title
@@ -98,11 +98,11 @@ class Job_candidates extends MY_Controller {
 		if(!is_null($job)){
 			$job_title = $job[0]->job_title;
 		} else {
-			$job_title = '--';	
+			$job_title = '--';
 		}
 		// get date
 		$created_at = $this->Xin_model->set_date_format($r->created_at);
-		
+
 		$data[] = array(
 			'<span data-toggle="tooltip" data-placement="top" title="'.$this->lang->line('xin_download').'">
 			<a href="'.site_url().'admin/download?type=resume&filename='.$r->job_resume.'"><button type="button" class="btn btn-secondary btn-sm m-b-0-0 waves-effect waves-light"><i class="fa fa-download"></i></button></a></span><span data-toggle="tooltip" data-placement="top" title="'.$this->lang->line('xin_delete').'"><button type="button" class="btn btn-danger btn-sm m-b-0-0 waves-effect waves-light delete" data-toggle="modal" data-target=".delete-modal" data-record-id="'. $r->application_id . '"><i class="fa fa-trash-o"></i></button></span>',
@@ -123,8 +123,8 @@ class Job_candidates extends MY_Controller {
 	  echo json_encode($output);
 	  exit();
      }
-	 	
-	// delete job candidate / job application	
+
+	// delete job candidate / job application
 	public function delete() {
 		/* Define return | here result is used to return user data and error for error message */
 		$Return = array('result'=>'', 'error'=>'');

@@ -17,7 +17,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Job_interviews extends MY_Controller {
-	
+
 	 public function __construct() {
         Parent::__construct();
 		//load the model
@@ -25,7 +25,7 @@ class Job_interviews extends MY_Controller {
 		$this->load->model("Xin_model");
 		$this->load->model("Designation_model");
 	}
-	
+
 	/*Function to set JSON output*/
 	public function output($Return=array()){
 		/*Set response header*/
@@ -34,11 +34,11 @@ class Job_interviews extends MY_Controller {
 		/*Final JSON response*/
 		exit(json_encode($Return));
 	}
-	
+
 	 public function index()
      {
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$system = $this->Xin_model->read_setting_info(1);
@@ -51,8 +51,8 @@ class Job_interviews extends MY_Controller {
 		$data['breadcrumbs'] = $this->lang->line('left_job_interviews');
 		$data['path_url'] = 'job_interviews';
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('52',$role_resources_ids)) {
-			if(!empty($session)){ 
+		if(in_array('94',$role_resources_ids)) {
+			if(!empty($session)){
 				$data['subview'] = $this->load->view("admin/job_post/job_interviews", $data, TRUE);
 				$this->load->view('admin/layout/layout_main', $data); //page load
 			} else {
@@ -60,15 +60,15 @@ class Job_interviews extends MY_Controller {
 			}
 		} else {
 			redirect('admin/dashboard');
-		}	  
+		}
      }
- 
+
     public function interview_list()
      {
 
 		$data['title'] = $this->Xin_model->site_title();
 		$session = $this->session->userdata('username');
-		if(!empty($session)){ 
+		if(!empty($session)){
 			$this->load->view("admin/job_post/job_interviews", $data);
 		} else {
 			redirect('admin/');
@@ -77,23 +77,23 @@ class Job_interviews extends MY_Controller {
 		$draw = intval($this->input->get("draw"));
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
-		
-		
+
+
 		$interview = $this->Job_post_model->all_interviews();
-		
+
 		$data = array();
 
         foreach($interview->result() as $r) {
-		
+
 		// get job title
 		$job = $this->Job_post_model->read_job_information($r->job_id);
 		if(!is_null($job)){
 			$job_title = $job[0]->job_title;
 		} else {
-			$job_title = '--';	
+			$job_title = '--';
 		}
 		// get date
-		$interview_date = $this->Xin_model->set_date_format($r->interview_date);		
+		$interview_date = $this->Xin_model->set_date_format($r->interview_date);
 		// get interviewees
 		if($r->interviewees_id == '') {
 			$interviewees = '-';
@@ -104,13 +104,13 @@ class Job_interviews extends MY_Controller {
 			if(!is_null($user_intwee)){
 				$interviewees .= '<li>'.$user_intwee[0]->first_name. ' '.$user_intwee[0]->last_name.'</li>';
 			} else {
-				$interviewees .= '';	
+				$interviewees .= '';
 			}
-			
+
 			}
 			$interviewees .= '</ol>';
 		}
-		
+
 		// get interviewers
 		if($r->interviewers_id == '') {
 			$interviewers = '-';
@@ -121,17 +121,17 @@ class Job_interviews extends MY_Controller {
 				if(!is_null($user_intwer)){
 					$interviewers .= '<li>'.$user_intwer[0]->first_name. ' '.$user_intwer[0]->last_name.'</li>';
 				} else {
-					$interviewers .= '';	
+					$interviewers .= '';
 				}
 			}
 			$interviewers .= '</ol>';
 		}
-		
+
 		// get time
 		$interview_time = $r->interview_date.' '.$r->interview_time;
 		$interview_ex_time =  new DateTime($interview_time);
 		$int_time = $interview_ex_time->format('h:i a');
-		
+
 		// interview date and time
 		$interview_d_t = $interview_date.' '.$int_time;
 		// interview added by
@@ -140,9 +140,9 @@ class Job_interviews extends MY_Controller {
 		if(!is_null($u_added)){
 			$int_addedby = $u_added[0]->first_name. ' '.$u_added[0]->last_name;
 		} else {
-			$int_addedby = '--';	
-		}		
-		
+			$int_addedby = '--';
+		}
+
 		$data[] = array(
 			'<span data-toggle="tooltip" data-placement="top" title="'.$this->lang->line('xin_delete').'"><button type="button" class="btn btn-danger btn-sm m-b-0-0 waves-effect waves-light delete" data-toggle="modal" data-target=".delete-modal" data-record-id="'. $r->job_interview_id . '"><i class="fa fa-trash-o"></i></button></span>',
 			$job_title,
@@ -163,18 +163,18 @@ class Job_interviews extends MY_Controller {
 	  echo json_encode($output);
 	  exit();
      }
-	 	
+
 	// Validate and add info in database
 	public function add_interview() {
-	
-		if($this->input->post('add_type')=='interview') {		
+
+		if($this->input->post('add_type')=='interview') {
 		/* Define return | here result is used to return user data and error for error message */
 		$Return = array('result'=>'', 'error'=>'');
-			
+
 		/* Server side PHP input validation */
-		$description = $this->input->post('description');	
+		$description = $this->input->post('description');
 		$qt_description = htmlspecialchars(addslashes($description), ENT_QUOTES);
-		
+
 		if($this->input->post('job_id')==='') {
        		$Return['error'] = $this->lang->line('xin_interview_job_post');
 		} else if($this->input->post('interview_date')==='') {
@@ -188,23 +188,23 @@ class Job_interviews extends MY_Controller {
 		} else if(empty($this->input->post('interviewers'))) {
        		$Return['error'] = $this->lang->line('xin_interview_job_interviewers');
 		}
-				
+
 		if($Return['error']!=''){
        		$this->output($Return);
     	}
-		
+
 		if(!empty($this->input->post('interviewees'))) {
 			$interviewees_ids = implode(',',$this->input->post('interviewees'));
 		} else {
 			$interviewees_ids = '';
 		}
-		
+
 		if(!empty($this->input->post('interviewers'))) {
 			$interviewers_ids = implode(',',$this->input->post('interviewers'));
 		} else {
 			$interviewers_ids = '';
 		}
-	
+
 		$data = array(
 		'job_id' => $this->input->post('job_id'),
 		'interview_date' => $this->input->post('interview_date'),
@@ -214,9 +214,9 @@ class Job_interviews extends MY_Controller {
 		'interview_time' => $this->input->post('interview_time'),
 		'interviewers_id' => $interviewers_ids,
 		'added_by' => $this->input->post('user_id'),
-		'created_at' => date('Y-m-d h:i:s')		
+		'created_at' => date('Y-m-d h:i:s')
 		);
-		
+
 		$result = $this->Job_post_model->add_interview($data);
 		if ($result == TRUE) {
 			$Return['result'] = $this->lang->line('xin_job_interview_added');
@@ -226,8 +226,8 @@ class Job_interviews extends MY_Controller {
 		$this->output($Return);
 		exit;
 		}
-	}	
-	
+	}
+
 	// get job employees
 	 public function get_employees() {
 
@@ -238,7 +238,7 @@ class Job_interviews extends MY_Controller {
 			'all_employees' => $this->Xin_model->all_employees(),
 			);
 		$session = $this->session->userdata('username');
-		if(!empty($session)){ 
+		if(!empty($session)){
 			$this->load->view("admin/job_post/get_job_employees", $data);
 		} else {
 			redirect('admin/');
@@ -248,7 +248,7 @@ class Job_interviews extends MY_Controller {
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
 	 }
-	
+
 	public function delete() {
 		/* Define return | here result is used to return user data and error for error message */
 		$Return = array('result'=>'', 'error'=>'');
