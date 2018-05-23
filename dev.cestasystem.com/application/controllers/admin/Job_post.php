@@ -53,7 +53,7 @@ class Job_post extends MY_Controller {
 		$data['breadcrumbs'] = $this->lang->line('left_job_posts');
 		$data['path_url'] = 'job_post';
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('49',$role_resources_ids)) {
+		if(in_array('91',$role_resources_ids)) {
 			if(!empty($session)){
 				$data['subview'] = $this->load->view("admin/job_post/job_list", $data, TRUE);
 				$this->load->view('admin/layout/layout_main', $data); //page load
