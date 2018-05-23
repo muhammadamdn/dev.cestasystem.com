@@ -27,7 +27,7 @@ class Chat extends MY_Controller
 		/*Final JSON response*/
 		exit(json_encode($Return));
 	}
-	
+
 	public function __construct()
      {
           parent::__construct();
@@ -37,12 +37,12 @@ class Chat extends MY_Controller
 		  $this->load->model('Chat_model');
 		  $this->load->model('Employees_model');
      }
-	 
+
 	// Logout from admin page
 	public function index() {
-	
+
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$data['title'] = $this->lang->line('xin_hr_chat_box');
@@ -57,28 +57,28 @@ class Chat extends MY_Controller
 			redirect('admin/dashboard');
 		}
 	}
-	
+
 	 public function chat_read()
 	{
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$data['title'] = $this->Xin_model->site_title();
 		$session = $this->session->userdata('username');
-		if(!empty($session)){ 
+		if(!empty($session)){
 			$this->load->view('admin/chatbox/single_chat', $data);
 		} else {
 			redirect('admin/');
 		}
 	}
-	
+
 	public function set_chatbox(){
-		
+
 		$fid = $this->input->get('from_id');
 		$tid = $this->input->get('to_id');
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		if($this->input->get('from_id')) {
@@ -93,24 +93,24 @@ class Chat extends MY_Controller
 			  <div class="chats" id="chatbox">';
 				foreach($this->Chat_model->get_messages() as $msgs){
 					if(($tid==$msgs->to_id && $msgs->from_id==$fid) || ($fid==$msgs->to_id && $msgs->from_id==$tid)) {
-						
+
 					if($session['user_id']!=$msgs->from_id){
 						$user_info = $this->Xin_model->read_user_info($msgs->to_id);
 						//send
 						if($user_info[0]->profile_picture!='' && $user_info[0]->profile_picture!='no file') {
 							$de_file = base_url().'uploads/profile/'.$user_info[0]->profile_picture;
 						} else {
-							if($user_info[0]->gender=='Male') { 
+							if($user_info[0]->gender=='Male') {
 								$de_file = base_url().'uploads/profile/default_male.jpg';
-							} else { 
+							} else {
 								$de_file = base_url().'uploads/profile/default_female.jpg';
-							} 
+							}
 						}
 						$data = array(
 						'is_read' => 1,
 						);
 						$result = $this->Chat_model->update_chat_status($data,$msgs->from_id,$session['user_id'] );
-						
+
 						echo '<div class="chat chat-left">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title=""> <img src="'.$de_file.'" alt="avatar" /> </a> </div>
 						  <div class="chat-body">
@@ -125,11 +125,11 @@ class Chat extends MY_Controller
 							if($fuser_info[0]->profile_picture!='' && $fuser_info[0]->profile_picture!='no file') {
 								$fde_file = base_url().'uploads/profile/'.$fuser_info[0]->profile_picture;
 							} else {
-								if($fuser_info[0]->gender=='Male') { 
+								if($fuser_info[0]->gender=='Male') {
 									$fde_file = base_url().'uploads/profile/default_male.jpg';
-								} else { 
+								} else {
 									$fde_file = base_url().'uploads/profile/default_female.jpg';
-								} 
+								}
 							}
 						echo '<div class="chat">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title=""> <img src="'.$fde_file.'" alt="avatar" /> </a> </div>
@@ -151,7 +151,7 @@ class Chat extends MY_Controller
 				  <input name="to_id" id="tid" value="'.$tid.'" type="hidden">
 				  <input name="from_id" id="fid" value="'.$fid.'" type="hidden">
 				  <input name="message_frm" id="fid" value="'.$tid.'" type="hidden">
-	
+
 					<input type="text" name="message_content" class="form-control" id="message_content" placeholder="Type your message">
 				  </fieldset>
 				  <fieldset class="form-group position-relative has-icon-left col-xs-2 m-0">
@@ -168,15 +168,15 @@ class Chat extends MY_Controller
 		  $("#xin-form").submit(function(e){
 			var fd = new FormData(this);
 			var text = $("#message_content").val();
-			
+
 			if(text.length == 0){
 				return false;
-			}			
+			}
 			var obj = $(this), action = obj.attr("name");
 			fd.append("is_ajax", 2);
-	
+
 			fd.append("form", action);
-		
+
 			e.preventDefault();
 			$(".save").prop("disabled", true);
 			$.ajax({
@@ -188,7 +188,7 @@ class Chat extends MY_Controller
 				processData:false,
 				success: function(JSON)
 				{
-					
+
 					var siteUrl = "'.site_url('admin/chat/set_chatbox').'?from_id='.$fid.'&to_id='.$tid.'";
 					$.get(siteUrl, function(data, status){
 					jQuery("#chat_box").html(data);
@@ -197,51 +197,51 @@ class Chat extends MY_Controller
 					$("#chatAudioSent")[0].play();
 					jQuery(".chat-app-window").animate({ scrollTop: $(".chat-app-window").prop("scrollHeight")}, 0);
 					});
-					
+
 				},
-				error: function() 
+				error: function()
 				{
 					$(".save").prop("disabled", false);
-				} 	        
+				}
 		   });
 		});
-	});	
+	});
 	</script>
 	  ';
 	  }
 	}
-	
+
 	public function refresh_chatbox(){
-		
+
 		$fid = $this->input->get('from_id');
 		$tid = $this->input->get('to_id');
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		if($this->input->get('from_id')) {
-		
+
 				foreach($this->Chat_model->get_messages() as $msgs){
-					
+
 					if(($tid==$msgs->to_id && $msgs->from_id==$fid) || ($fid==$msgs->to_id && $msgs->from_id==$tid)) {
-						
+
 					if($session['user_id']!=$msgs->from_id){
 						$user_info = $this->Xin_model->read_user_info($msgs->to_id);
 						//send
 						if($user_info[0]->profile_picture!='' && $user_info[0]->profile_picture!='no file') {
 							$de_file = base_url().'uploads/profile/'.$user_info[0]->profile_picture;
 						} else {
-							if($user_info[0]->gender=='Male') { 
+							if($user_info[0]->gender=='Male') {
 								$de_file = base_url().'uploads/profile/default_male.jpg';
-							} else { 
+							} else {
 								$de_file = base_url().'uploads/profile/default_female.jpg';
-							} 
+							}
 						}
 						$data = array(
 						'is_read' => 1,
 						);
-						$result = $this->Chat_model->update_chat_status($data,$msgs->from_id,$session['user_id'] );						
-						
+						$result = $this->Chat_model->update_chat_status($data,$msgs->from_id,$session['user_id'] );
+
 						echo '<div class="chat chat-left">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title=""> <img src="'.$de_file.'" alt="avatar" /> </a> </div>
 						  <div class="chat-body">
@@ -256,11 +256,11 @@ class Chat extends MY_Controller
 							if($fuser_info[0]->profile_picture!='' && $fuser_info[0]->profile_picture!='no file') {
 								$fde_file = base_url().'uploads/profile/'.$fuser_info[0]->profile_picture;
 							} else {
-								if($fuser_info[0]->gender=='Male') { 
+								if($fuser_info[0]->gender=='Male') {
 									$fde_file = base_url().'uploads/profile/default_male.jpg';
-								} else { 
+								} else {
 									$fde_file = base_url().'uploads/profile/default_female.jpg';
-								} 
+								}
 							}
 						echo '<div class="chat">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title=""> <img src="'.$fde_file.'" alt="avatar" /> </a> </div>
@@ -273,41 +273,41 @@ class Chat extends MY_Controller
 						}
 					}
 				}
-			  
-			  
+
+
 		}
 	}
 	/*public function refresh_mode_chatbox(){
-		
+
 		$fid = $this->input->get('from_id');
 		$tid = $this->input->get('to_id');
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		if($this->input->get('from_id')) {
-		
+
 				foreach($this->Chat_model->get_messages() as $msgs){
-					
+
 					if(($tid==$msgs->to_id && $msgs->from_id==$fid) || ($fid==$msgs->to_id && $msgs->from_id==$tid)) {
-						
+
 					if($session['user_id']!=$msgs->from_id){
 						$user_info = $this->Xin_model->read_user_info($msgs->to_id);
 						//send
 						if($user_info[0]->profile_picture!='' && $user_info[0]->profile_picture!='no file') {
 							$de_file = base_url().'uploads/profile/'.$user_info[0]->profile_picture;
 						} else {
-							if($user_info[0]->gender=='Male') { 
+							if($user_info[0]->gender=='Male') {
 								$de_file = base_url().'uploads/profile/default_male.jpg';
-							} else { 
+							} else {
 								$de_file = base_url().'uploads/profile/default_female.jpg';
-							} 
+							}
 						}
 						$data = array(
 						'is_read' => 1,
 						);
-						$result = $this->Chat_model->update_chat_status($data,$msgs->from_id,$session['user_id'] );						
-						
+						$result = $this->Chat_model->update_chat_status($data,$msgs->from_id,$session['user_id'] );
+
 						echo '<div class="chat chat-left">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title=""> <img src="'.$de_file.'" alt="avatar" /> </a> </div>
 						  <div class="chat-body">
@@ -322,11 +322,11 @@ class Chat extends MY_Controller
 							if($fuser_info[0]->profile_picture!='' && $fuser_info[0]->profile_picture!='no file') {
 								$fde_file = base_url().'uploads/profile/'.$fuser_info[0]->profile_picture;
 							} else {
-								if($fuser_info[0]->gender=='Male') { 
+								if($fuser_info[0]->gender=='Male') {
 									$fde_file = base_url().'uploads/profile/default_male.jpg';
-								} else { 
+								} else {
 									$fde_file = base_url().'uploads/profile/default_female.jpg';
-								} 
+								}
 							}
 						echo '<div class="chat">
 						  <div class="chat-avatar"> <a class="avatar" data-toggle="tooltip" href="#" data-placement="right" title="" data-original-title=""> <img src="'.$fde_file.'" alt="avatar" /> </a> </div>
@@ -339,13 +339,13 @@ class Chat extends MY_Controller
 						}
 					}
 				}
-			  
-			  
+
+
 		}
 	}*/
 	public function refresh_chat_users_msg() {
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$unread_msgs = $this->Xin_model->get_single_unread_message($session['user_id']);
@@ -355,11 +355,11 @@ class Chat extends MY_Controller
 			echo '';
 		}
 	}
-	
+
 	public function refresh_chat_users() {
-		
+
 		$session = $this->session->userdata('username');
-		if(empty($session)){ 
+		if(empty($session)){
 			redirect('admin/');
 		}
 		$all_active_employees = $this->Xin_model->all_active_employees();
@@ -373,24 +373,24 @@ class Chat extends MY_Controller
 				$bgm = 'avatar-busy';
 			else:
 				$bgm = 'avatar-away';
-			endif;	
-		
+			endif;
+
          endif;
         if($active_employees->user_id!=$session['user_id']):
-        
+
         echo '<button href="#" class="list-group-item list-group-item-action media no-border set-sschatbox" id="set_box_<?php echo $active_employees->user_id;?>" data-from-id="'.$session['user_id'].'" data-to-id="'.$active_employees->user_id.'" data-toggle="modal" data-target=".chatbox-single">
           <div class="media-left"> <span class="avatar avatar-md '.$bgm.'">';
           	if($active_employees->profile_picture!='' && $active_employees->profile_picture!='no file') {
             echo '<img class="media-object rounded-circle" src="'.base_url()."uploads/profile/".$active_employees->profile_picture.'" alt=""> <i></i> </span>';
              } else {
-              if($active_employees->gender=='Male') { 
+              if($active_employees->gender=='Male') {
              	$de_file = base_url().'uploads/profile/default_male.jpg';
              } else {
              	$de_file = base_url().'uploads/profile/default_female.jpg';
-             } 
+             }
             echo '<img class="media-object rounded-circle" src="'.$de_file.'" alt=""> <i></i> </span>';
-              } 
-            $fname = $active_employees->first_name.' '.$active_employees->last_name; 
+              }
+            $fname = $active_employees->first_name.' '.$active_employees->last_name;
 			$unread_msgs = $this->Chat_model->get_unread_message($active_employees->user_id,$session['user_id']);
 			$last_chat = $this->Chat_model->last_user_message($active_employees->user_id,$session['user_id']);
 			if(!is_null($last_chat)){
@@ -400,7 +400,7 @@ class Chat extends MY_Controller
 				$last_chat_date = '--';
 				$message_content = 'No Message.';
 			}
-			
+
            echo '</div>
           <div class="media-body">
             <h6 class="list-group-item-heading">'.$fname.' <span class="font-small-3 float-xs-right primary">'.$last_chat_date.'</span></h6>
@@ -415,7 +415,7 @@ class Chat extends MY_Controller
           endforeach;
 		 /* echo '<script type="text/javascript">
 		  $(document).ready(function(){
-			  $(".set-chatbox").click(function(e){	
+			  $(".set-chatbox").click(function(e){
 				var fromId = $(this).data("from-id");
 				var toId = $(this).data("to-id");
 				jQuery(".set-chatbox").removeClass("media bg-blue-grey bg-lighten-5 border-right-primary border-right-2");
@@ -426,18 +426,18 @@ class Chat extends MY_Controller
 					jQuery(".chat-app-window").animate({ scrollTop: $(".chat-app-window").prop("scrollHeight")}, 0);
 				});
 			});
-		});	
+		});
 	</script>';*/
 	}
-		
+
 	// send chat
 	public function send_chat() {
-	
-		if($this->input->post('from_id') && $this->input->post('to_id')) {		
+
+		if($this->input->post('from_id') && $this->input->post('to_id')) {
 			/* Define return | here result is used to return user data and error for error message */
 			$Return = array('result'=>'', 'error'=>'');
 			$this->form_validation->set_rules('message_content', 'Message', 'trim|required|xss_clean');
-								
+
 			$message = $this->input->post('message_content');
 			$qt_message = htmlspecialchars(addslashes($message), ENT_QUOTES);
 			if ($this->form_validation->run() == FALSE) {
@@ -446,7 +446,7 @@ class Chat extends MY_Controller
 			if($this->input->post('message_content')==='') {
 				return false;
 			}
-		
+
 			$data = array(
 			'message_content' => $qt_message,
 			'from_id' => $this->input->post('from_id'),
@@ -457,14 +457,14 @@ class Chat extends MY_Controller
 			$result = $this->Chat_model->add_chat($data);
 		}
 	}
-	
+
 	// change online status
 	public function change_status() {
-	
-		if($this->input->get('status_id')) {		
+
+		if($this->input->get('status_id')) {
 			/* Define return | here result is used to return user data and error for error message */
 			$Return = array('result'=>'', 'error'=>'');
-			$session = $this->session->userdata('username');					
+			$session = $this->session->userdata('username');
 			$status_id = $this->input->get('status_id');
 			$id = $session['user_id'];
 			$data = array(
@@ -480,7 +480,7 @@ class Chat extends MY_Controller
 			exit;
 		}
 	}
-} 
+}
 
 
 
