@@ -52,7 +52,7 @@ class Timesheet extends MY_Controller {
 		$data['breadcrumbs'] = $this->lang->line('dashboard_attendance');
 		$data['path_url'] = 'attendance';
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('28',$role_resources_ids)) {
+		if(in_array('71',$role_resources_ids)) {
 			if(!empty($session)){
 			$data['subview'] = $this->load->view("admin/timesheet/attendance_list", $data, TRUE);
 			$this->load->view('admin/layout/layout_main', $data); //page load
@@ -77,7 +77,7 @@ class Timesheet extends MY_Controller {
 		$data['breadcrumbs'] = $this->lang->line('left_date_wise_attendance');
 		$data['path_url'] = 'date_wise_attendance';
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('29',$role_resources_ids)) {
+		if(in_array('72',$role_resources_ids)) {
 			if(!empty($session)){
 			$data['subview'] = $this->load->view("admin/timesheet/date_wise", $data, TRUE);
 			$this->load->view('admin/layout/layout_main', $data); //page load
@@ -103,7 +103,7 @@ class Timesheet extends MY_Controller {
 		$data['get_all_companies'] = $this->Xin_model->get_companies();
 		$data['all_employees'] = $this->Xin_model->all_employees();
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('30',$role_resources_ids)) {
+		if(in_array('73',$role_resources_ids)) {
 			if(!empty($session)){
 				$data['subview'] = $this->load->view("admin/timesheet/update_attendance", $data, TRUE);
 				$this->load->view('admin/layout/layout_main', $data); //page load
@@ -127,7 +127,7 @@ class Timesheet extends MY_Controller {
 		$data['path_url'] = 'import_attendance';
 		$data['all_employees'] = $this->Xin_model->all_employees();
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('31',$role_resources_ids)) {
+		if(in_array('74',$role_resources_ids)) {
 			if(!empty($session)){
 				$data['subview'] = $this->load->view("admin/timesheet/attendance_import", $data, TRUE);
 				$this->load->view('admin/layout/layout_main', $data); //page load
