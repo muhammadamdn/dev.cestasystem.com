@@ -27,7 +27,7 @@ class Calendar extends MY_Controller
 		/*Final JSON response*/
 		exit(json_encode($Return));
 	}
-
+	
 	public function __construct()
      {
           parent::__construct();
@@ -43,12 +43,12 @@ class Calendar extends MY_Controller
 		  $this->load->model('Meetings_model');
 		  $this->load->model('Trainers_model');
      }
-
+	 
 	// Logout from admin page
 	public function hr() {
-
+	
 		$session = $this->session->userdata('username');
-		if(empty($session)){
+		if(empty($session)){ 
 			redirect('admin/');
 		}
 		$data['title'] = $this->lang->line('xin_hr_calendar_title');
@@ -66,14 +66,14 @@ class Calendar extends MY_Controller
 		$data['all_meetings'] = $this->Meetings_model->get_meetings();
 		$data['get_all_companies'] = $this->Xin_model->get_companies();
 		$role_resources_ids = $this->Xin_model->user_role_resource();
-		if(in_array('55',$role_resources_ids)) {
+		if(in_array('95',$role_resources_ids)) {
 			$data['subview'] = $this->load->view("admin/calendar/calendar_hr", $data, TRUE);
 			$this->load->view('admin/layout/layout_main', $data); //page load
 		} else {
 			redirect('admin/dashboard');
 		}
 	}
-
+	
 	// add record of event/meeting/tasks/projects....
 	public function add_cal_record()
 	{
@@ -89,7 +89,7 @@ class Calendar extends MY_Controller
 		'all_training_types' => $this->Training_model->all_training_types(),
 		);
 		$session = $this->session->userdata('username');
-		if(!empty($session)){
+		if(!empty($session)){ 
 			if($record == 0){
 				$this->load->view('admin/calendar/options/dialog_add_holiday', $data);
 			} else if($record == 1){
@@ -119,5 +119,5 @@ class Calendar extends MY_Controller
 			redirect('admin/');
 		}
 	}
-}
+} 
 ?>
