@@ -1,0 +1,105 @@
+Staff
+- Employess = 13
+- Roles & Previleges =
+- Staff Directory = 88
+- Import Employees = 92
+
+Core HR
+- Award = 14
+- Transfer = 15
+- Resignations = 16
+- Travels = 17
+- Promotions = 18
+- Complaints = 19
+- Warnings = 20
+- Terminations = 21
+- Employees Last Login = 22
+- Employess Exit = 23
+
+Organization
+- Announcement = 11
+- Company Policy = 9
+- Organization Chart = 96
+- Department = 3
+- Designation = 4
+- Company = 5
+- Location = 6
+- Office Shifts = 7
+- Holidays = 8
+- Expense = 10
+
+Chat Box = 118
+Calender HR = 95
+
+Assets // 24 ??
+- Assets = 25
+- Category = 26
+
+Event & Meeting // 97
+- Events = 98
+- Meetings = 99
+
+Timesheet
+- Attendance = 28
+- Date Wise Atendance = 29
+- Update Attendance = 30
+- Import Attendance = 31
+
+Recruitment
+- Job Post = 49
+- Jobs Listing = 50
+- Job Candidates = 51
+- Job Interview = 52
+
+Payroll
+- Hourly Wages = 33
+- Payroll Template = 34
+- Manage Salary = 35
+- Generate Payslip = 36
+- Payment History = 37
+- Advance Salary = 38
+- Advance Salary Report = 39
+
+
+HR Report
+- Payslip Report = 111
+- Attendece Report = 112
+- Training Report = 113
+- Project Report = 114
+- Task Report = 115
+- User Roles Report = 116
+- Employee Report = 117
+
+System
+- Multi Language = 89
+- Settings = 60
+- Setup Modules = 93
+- Theme Settings = 94
+- Constants = 61
+- Database Backup = 62
+- Email Templates = 63
+
+Leaves = 46
+
+Project
+- Project = 44
+- Task = 45
+
+Goal Tracking
+- Goal Tracking = 107
+- Goal Type = 108
+
+Inquires = 43
+
+File Manager = 47
+
+Training // 53 ??
+- Training List = 54
+- Training Type = 55
+- Trainer List =  56
+
+Performance // 40 ??
+- Indicator = 41
+- Appraisal = 42
+
+Logout
